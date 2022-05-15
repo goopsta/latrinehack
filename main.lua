@@ -1,5 +1,3 @@
-getgenv().name = game.Players.LocalPlayer.Name
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -35,14 +33,14 @@ local framework = {
     notifications = {},
     labels = {},
     theme = {
-        accent = nRGB(81,48,179),
+        accent = nHSV(28,100,99),
         font = Drawing.Fonts.Plex,
         fontSize = 13
     },
     menu = {
         open = true,
         fading = false,
-        cursor = true,
+        cursor = nil,
         colorClipboard = nil,
         currentTab = nil,
         dragStart = nVector2(),
@@ -55,8 +53,8 @@ local framework = {
         currentDropdown = nil,
         keybinds = {},
         reservedKeybinds = {
-            menuKey = Enum.KeyCode.End,
-            panicKey = Enum.KeyCode.I
+            menuKey = Enum.KeyCode.RightShift,
+            panicKey = Enum.KeyCode.End
         },
         flags = {},
         tabs = {},
@@ -237,7 +235,7 @@ setmetatable(framework, {
                 ZIndex = 999,
                 Filled = true,
                 Visible = self.menu.open,
-                Transparency = 0.8,
+                Transparency = 1,
                 Color = nRGB(255,255,255)
             }})
             self("createConnection", {name = "cursorChanged", connection = RunService.RenderStepped, callback = function(Input)
@@ -1175,50 +1173,69 @@ function framework:createScreenLabel(args)
     return screenLabel
 end
 
-
-
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
-
-local latrinecfg = {
-  aimbot = {
-    enabled = false,
-  }
-}
-
-
+local watermark = framework:createScreenLabel{text = "\n\nlatrinehack | " .. os.date("%X") .. " | "..localPlayer.Name}
+local watermarkConnection = framework("createConnection", {name = "watermark", connection = RunService.Heartbeat, callback = function()
+    watermark:changeText("\n\nlatrinehack | " .. os.date("%X") .. " | "..localPlayer.Name)
+end})
 local window = framework:createWindow{}
-local aimbott = window:createTab{name = "aimbot"}
-local 
-local teleport = window:createTab{name = "teleports"}
-local miscellaneous = window:createTab{name = "misc"}
 
-local button = teleport:createButton{text = "armory", callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/tammmmmm/github/main/%E4%B8%BB%E4%BC%A0%E9%80%81.lua"))()
-end}
-local button = teleport:createButton{text = "crim Base", callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/tammmmmm/github/main/%E7%8C%A9%E7%BA%A2%E4%BC%A0%E9%80%81.lua"))()
-end}
-local button = teleport:createButton{text = "cafeteria Knife", callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/tammmmmm/github/main/%E5%8E%A8%E6%88%BF.lua"))()
-end}
-local button = teleport:createButton{text = "yard Knife", callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/tammmmmm/github/main/%E9%99%A2%E5%AD%90%E5%88%80.lua"))()
-end}
-local button = teleport:createButton{text = "lobby", callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/tammmmmm/github/main/%E5%A4%A7%E5%A0%82.lua"))()
-end}
-local button = teleport:createButton{text = "prison Tree", callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/tammmmmm/github/main/the%20fuckinnn%20uhhh%20beind%20the%20tree.lua"))()
+local home      = window:createTab{name = "latrinehack"}
+local aimbotTab = window:createTab{name = "aimbot"}
+local visualTab = window:createTab{name = "visuals"}
+local exploits  = window:createTab{name = "exploits"}
+local miscTab   = window:createTab{name = "misc"}
+
+--[[
+local label = antiaim:createLabel{text = "textLabel"}
+local button = antiaim:createButton{text = "button", callback = function()
+    framework("changeAccent", {accent = nHSV(math.random(0, 360)/360, math.random(50,100)/100, 1)})
 end}
 
-local button = miscellaneous:createButton{text = "reset While Tazed", side = "right", callback = function()
-    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+local toggle = antiaim:createToggle{text = "toggle", side = "right", callback = function(val)
+    print(val)
 end}
-local button = miscellaneous:createButton{text = "set health to 1", side = "right", callback = function()
-    game.Players.LocalPlayer.Character.Humanoid.Health = 1
+
+local slider = antiaim:createSlider{text = "slider", side = "right", min = -100, default = 0, max = 100, callback = function(val)
+    print(val)
 end}
+
+local keybind = antiaim:createKeybind{text = "keybind", side = "right", flag = "keybind", callback = function(val)
+    print('Pressed a keybind')
+end}
+
+local dropdown = antiaim:createDropdown{text = "dropdown", default = "hi Default", options = {"aaaa","bbbb", "cccc"}, callback = function(val)
+    print(val)
+end}
+]]
+
+-- just an example for me and soap to remember documentation
+
+-- home tab --
+home:createLabel{text = "welcome to latrinehack\n\nusername: "..localPlayer.Name.."\n\nuserid: "..localPlayer.UserId.."\n\njobid: "..game.JobId.."\n\n\n\nwindow keybind: "..tostring(framework.menu.reservedKeybinds.menuKey)}
+
+-- aimbot tab --
+
+-- visuals tab
+
+-- exploits tab --
+
+-- misc tab --
+
+
+
+----------------------
+
+
+
+-- aimbot func --
+
+-- visuals func --
+
+-- exploits func --
+
+-- misc func --
+
+
 
 framework("initialize")
 return framework
